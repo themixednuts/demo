@@ -98,7 +98,7 @@ export class DemoPacket {
 		for (const registry of DemoPacket.#registry) {
 			const type = this.#type;
 			if (registry.isType(type)) {
-				//@ts-expect-error
+				//@ts-expect-error can't infer type in this for-loop
 				return registry.decode(type, this.#data);
 			}
 		}
