@@ -1,0 +1,29 @@
+# Learn more: https://buf.build/docs/configuration/v2/buf-gen-yaml
+version: v2
+inputs:
+  - directory: proto-definitions/deadlock
+    paths:
+      - proto-definitions/deadlock/base_modifier.proto
+      - proto-definitions/deadlock/citadel_gameevents.proto
+      - proto-definitions/deadlock/citadel_gcmessages_common.proto
+      - proto-definitions/deadlock/citadel_usermessages.proto
+      - proto-definitions/deadlock/demo.proto
+      - proto-definitions/deadlock/engine_gcmessages.proto
+      - proto-definitions/deadlock/gameevents.proto
+      - proto-definitions/deadlock/gcsdk_gcmessages.proto
+      - proto-definitions/deadlock/netmessages.proto
+      - proto-definitions/deadlock/network_connection.proto
+      - proto-definitions/deadlock/networkbasetypes.proto
+      - proto-definitions/deadlock/steammessages_steamlearn.steamworkssdk.proto
+      - proto-definitions/deadlock/steammessages_unified_base.steamworkssdk.proto
+      - proto-definitions/deadlock/steammessages.proto
+      - proto-definitions/deadlock/te.proto
+      - proto-definitions/deadlock/usermessages.proto
+      - proto-definitions/deadlock/valveextensions.proto
+
+plugins:
+  - local: protoc-gen-es
+    opt:
+      - target=ts
+      - json_types=true
+    out: src/gen
