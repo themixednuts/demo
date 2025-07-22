@@ -1,36 +1,15 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@std/assert@^1.0.13": "1.0.13",
-    "jsr:@std/expect@^1.0.16": "1.0.16",
-    "jsr:@std/internal@^1.0.6": "1.0.8",
-    "jsr:@std/internal@^1.0.7": "1.0.8",
     "npm:@bufbuild/buf@^1.55.1": "1.55.1",
     "npm:@bufbuild/protobuf@^2.6.0": "2.6.1",
     "npm:@bufbuild/protoc-gen-es@^2.6.0": "2.6.1_@bufbuild+protobuf@2.6.1",
+    "npm:@deno/vite-plugin@^1.0.5": "1.0.5_vite@7.0.5__picomatch@4.0.3",
     "npm:@types/deno@^2.3.0": "2.3.0",
     "npm:typescript@~5.8.3": "5.8.3",
     "npm:unplugin-dts@^1.0.0-beta.0": "1.0.0-beta.4_typescript@5.8.3_vite@7.0.5__picomatch@4.0.3",
     "npm:vite@^7.0.5": "7.0.5_picomatch@4.0.3",
     "npm:vitest@^3.2.4": "3.2.4_vite@7.0.5__picomatch@4.0.3"
-  },
-  "jsr": {
-    "@std/assert@1.0.13": {
-      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
-      "dependencies": [
-        "jsr:@std/internal@^1.0.6"
-      ]
-    },
-    "@std/expect@1.0.16": {
-      "integrity": "ceeef6dda21f256a5f0f083fcc0eaca175428b523359a9b1d9b3a1df11cc7391",
-      "dependencies": [
-        "jsr:@std/assert",
-        "jsr:@std/internal@^1.0.7"
-      ]
-    },
-    "@std/internal@1.0.8": {
-      "integrity": "fc66e846d8d38a47cffd274d80d2ca3f0de71040f855783724bb6b87f60891f5"
-    }
   },
   "npm": {
     "@bufbuild/buf-darwin-arm64@1.55.1": {
@@ -102,6 +81,12 @@
         "@bufbuild/protobuf",
         "@typescript/vfs",
         "typescript@5.4.5"
+      ]
+    },
+    "@deno/vite-plugin@1.0.5_vite@7.0.5__picomatch@4.0.3": {
+      "integrity": "sha512-tLja5n4dyMhcze1NzvSs2iiriBymfBlDCZIrjMTxb9O2ru0gvmV6mn5oBD2teNw5Sd92cj3YJzKwsAs8tMJXlg==",
+      "dependencies": [
+        "vite"
       ]
     },
     "@esbuild/aix-ppc64@0.25.8": {
@@ -821,14 +806,12 @@
     }
   },
   "workspace": {
-    "dependencies": [
-      "jsr:@std/expect@^1.0.16"
-    ],
     "packageJson": {
       "dependencies": [
         "npm:@bufbuild/buf@^1.55.1",
         "npm:@bufbuild/protobuf@^2.6.0",
         "npm:@bufbuild/protoc-gen-es@^2.6.0",
+        "npm:@deno/vite-plugin@^1.0.5",
         "npm:@types/deno@^2.3.0",
         "npm:typescript@~5.8.3",
         "npm:unplugin-dts@^1.0.0-beta.0",

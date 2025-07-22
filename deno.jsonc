@@ -1,0 +1,23 @@
+{
+	"name": "@mixednuts/demo",
+	"version": "0.1.0",
+	"license": "MIT",
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM"],
+		"verbatimModuleSyntax": true,
+		"strict": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true
+	},
+	"imports": {
+		"@/": "./src/",
+		"./": "./"
+	},
+	"exports": {
+		".": "./src/index.ts",
+		"./buffers": "./src/buffers/index.ts",
+		"./gen": "./src/gen/index.ts"
+	}
+}

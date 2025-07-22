@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
-import dts from "unplugin-dts/vite";
+import deno from "@deno/vite-plugin";
 
 export default defineConfig({
-	plugins: [dts()],
+	plugins: [deno()],
 	build: {
 		lib: {
 			entry: {
