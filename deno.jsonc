@@ -1,23 +1,32 @@
 {
-	"name": "@mixednuts/demo",
-	"version": "0.1.0",
-	"license": "MIT",
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"verbatimModuleSyntax": true,
-		"strict": true,
-		// "noUnusedLocals": true,
-		// "noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true
-	},
-	"imports": {
-		"@/": "./src/",
-		"./": "./"
-	},
-	"exports": {
-		".": "./src/index.ts",
-		"./buffers": "./src/buffers/index.ts",
-		"./gen": "./src/gen/index.ts"
-	}
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
+  "name": "@mixednuts/demo",
+  "version": "0.1.0",
+  "license": "MIT",
+  "publish": {
+    "exclude": ["./tests"],
+  },
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+  },
+  "imports": {
+    "@/": "./src/",
+    "./": "./",
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./buffers": "./src/buffers/index.ts",
+    "./gen": "./src/gen/index.ts",
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-misused-new"],
+    },
+  },
 }
