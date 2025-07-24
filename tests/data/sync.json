@@ -1,13 +1,13 @@
 {
-  "tick": 88573,
-  "endtick": 88765,
-  "maxtick": 90109,
-  "rtdelay": 23.572,
-  "rcvage": 2.6,
-  "fragment": 383,
-  "signup_fragment": 0,
-  "tps": 64,
-  "keyframe_interval": 3,
-  "map": "dl_midtown",
-  "protocol": 5
+	"tick": 88573,
+	"endtick": 88765,
+	"maxtick": 90109,
+	"rtdelay": 23.572,
+	"rcvage": 2.6,
+	"fragment": 383,
+	"signup_fragment": 0,
+	"tps": 64,
+	"keyframe_interval": 3,
+	"map": "dl_midtown",
+	"protocol": 5
 }

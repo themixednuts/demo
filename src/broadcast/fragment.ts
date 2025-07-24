@@ -1,4 +1,4 @@
-import { BroadcastChunk } from "./chunk.ts";
+import { BroadcastChunk } from './chunk.ts';
 
 export class BroadcastFragment {
 	#buffer: Uint8Array;
@@ -15,7 +15,7 @@ export class BroadcastFragment {
 	 */
 	public static from(buffer: Uint8Array | ArrayBuffer): BroadcastFragment {
 		return new BroadcastFragment(
-			buffer instanceof ArrayBuffer ? new Uint8Array(buffer) : buffer
+			buffer instanceof ArrayBuffer ? new Uint8Array(buffer) : buffer,
 		);
 	}
 

@@ -1,12 +1,11 @@
 // Helper type to get union of all values from tuple of enums
 type ExtractEnumValues<TEnums extends readonly Record<string | number, any>[]> =
-  {
-    [K in keyof TEnums]: TEnums[K] extends Record<string | number, infer U>
-      ? U extends string | number
-        ? U
-        : never
-      : never;
-  }[number];
+	{
+		[K in keyof TEnums]: TEnums[K] extends Record<string | number, infer U>
+			? U extends string | number ? U
+			: never
+			: never;
+	}[number];
 /**
  * Generic Message Type Registry Interface
  *
@@ -63,18 +62,18 @@ type ExtractEnumValues<TEnums extends readonly Record<string | number, any>[]> =
  * ```
  */
 export interface MessageTypeRegistry<
-  TEnums extends readonly Record<string | number, any>[],
-  TMessageType extends ExtractEnumValues<TEnums> = ExtractEnumValues<TEnums>,
-  TReturnTypeMap extends Record<TMessageType, any> = Record<TMessageType, any>,
+	TEnums extends readonly Record<string | number, any>[],
+	TMessageType extends ExtractEnumValues<TEnums> = ExtractEnumValues<TEnums>,
+	TReturnTypeMap extends Record<TMessageType, any> = Record<TMessageType, any>,
 > {
-  /** The enum objects this decoder handles (for message name resolution) */
-  enums: TEnums;
-  /** Type guard function to check if a message type belongs to this decoder */
-  isType: (type: number) => type is TMessageType;
-  /** Decoder function that handles message decoding for the supported types */
-  decode: (
-    type: TMessageType,
-    data: Uint8Array,
-  ) => TReturnTypeMap[TMessageType];
-  name?: string;
+	/** The enum objects this decoder handles (for message name resolution) */
+	enums: TEnums;
+	/** Type guard function to check if a message type belongs to this decoder */
+	isType: (type: number) => type is TMessageType;
+	/** Decoder function that handles message decoding for the supported types */
+	decode: (
+		type: TMessageType,
+		data: Uint8Array,
+	) => TReturnTypeMap[TMessageType];
+	name?: string;
 }
