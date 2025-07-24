@@ -176,9 +176,9 @@ export class BroadcastReader {
 	}
 
 	public async *stream(
-		options: StreamOptions,
-	): AsyncGenerator<Readonly<BroadcastChunk>> {
-		const { signal } = options;
+		options?: StreamOptions,
+	): AsyncGenerator<{ fragment: number; chunk: Readonly<BroadcastChunk> }> {
+		const { signal } = options ?? {};
 		const sync = await this.sync(signal);
 
 		if (sync.signup_fragment == null || sync.fragment == null) {
@@ -189,7 +189,7 @@ export class BroadcastReader {
 		const fragment = BroadcastFragment.from(start);
 		for (const chunk of fragment.chunks()) {
 			if (signal?.aborted) return;
-			yield Object.freeze(chunk);
+			yield Object.freeze({ fragment: sync.signup_fragment, chunk });
 		}
 
 		let currentFragmentId = sync.fragment;
@@ -201,7 +201,7 @@ export class BroadcastReader {
 			for (const chunk of fragment.chunks()) {
 				if (signal?.aborted) return;
 				if (chunk.command === EDemoCommands.DEM_Stop) stop = true;
-				yield Object.freeze(chunk);
+				yield Object.freeze({ fragment: currentFragmentId, chunk });
 			}
 			if (!isDelta) isDelta = true;
 			else currentFragmentId++;
