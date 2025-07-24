@@ -1,11 +1,12 @@
 // Helper type to get union of all values from tuple of enums
-type ExtractEnumValues<TEnums extends readonly Record<string | number, any>[]> =
-	{
-		[K in keyof TEnums]: TEnums[K] extends Record<string | number, infer U>
-			? U extends string | number ? U
-			: never
-			: never;
-	}[number];
+type ExtractEnumValues<
+	TEnums extends readonly Record<string | number, number | string>[],
+> = {
+	[K in keyof TEnums]: TEnums[K] extends Record<string | number, infer U>
+		? U extends string | number ? U
+		: never
+		: never;
+}[number];
 /**
  * Generic Message Type Registry Interface
  *
@@ -62,9 +63,12 @@ type ExtractEnumValues<TEnums extends readonly Record<string | number, any>[]> =
  * ```
  */
 export interface MessageTypeRegistry<
-	TEnums extends readonly Record<string | number, any>[],
+	TEnums extends readonly Record<string | number, number | string>[],
 	TMessageType extends ExtractEnumValues<TEnums> = ExtractEnumValues<TEnums>,
-	TReturnTypeMap extends Record<TMessageType, any> = Record<TMessageType, any>,
+	TReturnTypeMap extends Record<TMessageType, unknown> = Record<
+		TMessageType,
+		unknown
+	>,
 > {
 	/** The enum objects this decoder handles (for message name resolution) */
 	enums: TEnums;
