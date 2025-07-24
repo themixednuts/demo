@@ -22,7 +22,15 @@ export class PacketParsingError extends Error {
 	}
 }
 
-export const REGISTRY = [
+export const REGISTRY: [
+	typeof NetMessage.registry,
+	typeof NetMessageBase.registry,
+	typeof CitadelGameEvent.registry,
+	typeof CitadelUserMessage.registry,
+	typeof GameEvent.registry,
+	typeof TempEntity.registry,
+	typeof UserMessage.registry,
+] = [
 	NetMessage.registry,
 	NetMessageBase.registry,
 	CitadelGameEvent.registry,
