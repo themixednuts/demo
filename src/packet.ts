@@ -43,6 +43,9 @@ const REGISTRY_LOOKUP = REGISTRY.reduce((acc, cur) => {
 	return acc;
 }, new Map<number, typeof REGISTRY[number]['decode']>());
 
+/**
+ * Represents a packet
+ */
 export class DemoPacket {
 	readonly #type: number;
 	readonly #size: number;

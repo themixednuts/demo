@@ -26,6 +26,10 @@ export type BroadcastChunkHeader = {
 	headerSize: number;
 };
 
+/**
+ * Represents a broadcast chunk.
+ * @see {@link BroadcastFragment}
+ */
 export class BroadcastChunk<K extends EDemoCommands = EDemoCommands>
 	implements BroadcastChunkTypeGuards {
 	#isCompressed: boolean;
