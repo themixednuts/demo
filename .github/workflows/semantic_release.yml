@@ -143,7 +143,7 @@ jobs:
               [
                 "@semantic-release/exec",
                 {
-                  "publishCmd": "deno publish"
+                  "successCmd": "deno publish"
                 }
               ]
             ]
