@@ -25,7 +25,8 @@
 	"exports": {
 		".": "./src/mod.ts",
 		"./buffers": "./src/buffers/mod.ts",
-		"./gen": "./src/gen/mod.ts"
+		"./gen": "./src/gen/mod.ts",
+		"./decoders": "./src/decoders/mod.ts"
 	},
 	"lint": {
 		"rules": {
