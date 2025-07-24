@@ -3,11 +3,9 @@
   "name": "@mixednuts/demo",
   "version": "0.1.0",
   "license": "MIT",
-  "publish": {
-    "include": ["./src/*"],
-    "exclude": ["./tests/*"],
+  "tasks": {
+    "test": "deno test -A",
   },
-  "tasks": {},
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
     "verbatimModuleSyntax": true,
@@ -25,9 +23,9 @@
     "@std/expect": "jsr:@std/expect@^1.0.16",
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./buffers": "./src/buffers/index.ts",
-    "./gen": "./src/gen/index.ts",
+    ".": "./src/mod.ts",
+    "./buffers": "./src/buffers/mod.ts",
+    "./gen": "./src/gen/mod.ts",
   },
   "lint": {
     "rules": {
