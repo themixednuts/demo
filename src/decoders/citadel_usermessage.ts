@@ -226,7 +226,7 @@ export const CitadelUserMessageDecoder: CitadelUserMessageDecodeMapper = {
 	[CitadelUserMessageIds.k_EUserMsg_TeamRewards]: (data: Uint8Array) =>
 		fromBinary(CCitadelUserMsg_TeamRewardsSchema, data),
 	[CitadelUserMessageIds.k_EUserMsg_AbilityFailed]: (
-		data: Uint8Array,
+		_data: Uint8Array,
 	): never => {
 		throw new Error('Function not implemented. k_EUserMsg_AbilityFailed');
 	},

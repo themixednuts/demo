@@ -1,7 +1,7 @@
 import { fromBinary } from '@bufbuild/protobuf';
 import {
-	type CMsgEffectData,
-	CMsgEffectDataSchema,
+	// type CMsgEffectData,
+	// CMsgEffectDataSchema,
 	type CMsgTEArmorRicochet,
 	CMsgTEArmorRicochetSchema,
 	type CMsgTEBeamEntPoint,

@@ -296,7 +296,7 @@ export const UserMessageDecoder: DecodeMapper = {
 		fromBinary(CUserMessage_NotifyResponseFoundSchema, data),
 	[EBaseUserMessages.UM_PlayResponseConditional]: (data: Uint8Array) =>
 		fromBinary(CUserMessage_PlayResponseConditionalSchema, data),
-	[EBaseUserMessages.UM_MAX_BASE]: (data: Uint8Array): never => {
+	[EBaseUserMessages.UM_MAX_BASE]: (_data: Uint8Array): never => {
 		throw new Error('Function not implemented.');
 	},
 

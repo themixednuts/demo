@@ -57,7 +57,7 @@ export function isNetMessageBase(type: number): type is NET_Messages {
 export const DecodeMapper: DecodeMapper = {
 	[NET_Messages.net_NOP]: (data: Uint8Array) =>
 		fromBinary(CNETMsg_NOPSchema, data),
-	[NET_Messages.net_Disconnect_Legacy]: (data: Uint8Array): never => {
+	[NET_Messages.net_Disconnect_Legacy]: (_data: Uint8Array): never => {
 		throw new Error('Function not implemented.');
 	},
 	[NET_Messages.net_SplitScreenUser]: (data: Uint8Array) =>

@@ -3,6 +3,7 @@ name: version_bump
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 on: workflow_dispatch
 
@@ -10,10 +11,10 @@ jobs:
   build:
     name: version bump
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
-      - name: Clone repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Deno
@@ -21,7 +22,12 @@ jobs:
         with:
           deno-version: canary
 
-      - name: Run version bump
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Bump version
         run: |
           git fetch --unshallow origin
           deno run -A jsr:@deno/bump-workspaces@^0.1/cli
@@ -29,3 +35,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_USER_NAME: ${{ github.actor }}
           GIT_USER_EMAIL: ${{ github.actor}}@users.noreply.github.com
+
+      - name: Commit version bump
+        run: |
+          git add .
+          git commit -m "chore: bump version"
+          git push origin HEAD
+
+      - name: Read version from deno.jsonc
+        id: version
+        run: echo "version=v$(jq -r .version deno.jsonc)" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        run: |
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Install GitHub CLI
+        uses: cli/cli-action@v2
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.version }}" --generate-notes --verify-tag

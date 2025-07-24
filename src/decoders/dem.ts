@@ -18,16 +18,12 @@ import {
 	CDemoFileInfoSchema,
 	type CDemoFullPacket,
 	CDemoFullPacketSchema,
-	type CDemoPacket,
-	CDemoPacketSchema,
 	type CDemoRecovery,
 	CDemoRecoverySchema,
 	type CDemoSaveGame,
 	CDemoSaveGameSchema,
 	type CDemoSendTables,
 	CDemoSendTablesSchema,
-	type CDemoSpawnGroups,
-	CDemoSpawnGroupsSchema,
 	type CDemoStop,
 	CDemoStopSchema,
 	type CDemoStringTables,
@@ -73,7 +69,7 @@ export function isDemoCommand(type: number): type is EDemoCommands {
 }
 
 export const DEMDecoder: DecodeMapper = {
-	[EDemoCommands.DEM_Error]: (data: Uint8Array): never => {
+	[EDemoCommands.DEM_Error]: (_data: Uint8Array): never => {
 		throw new Error('Function not implemented.');
 	},
 	[EDemoCommands.DEM_Stop]: (data: Uint8Array) =>
@@ -112,10 +108,10 @@ export const DEMDecoder: DecodeMapper = {
 		fromBinary(CDemoAnimationHeaderSchema, data),
 	[EDemoCommands.DEM_Recovery]: (data: Uint8Array) =>
 		fromBinary(CDemoRecoverySchema, data),
-	[EDemoCommands.DEM_IsCompressed]: (data: Uint8Array): never => {
+	[EDemoCommands.DEM_IsCompressed]: (_data: Uint8Array): never => {
 		throw new Error('Function not implemented.');
 	},
-	[EDemoCommands.DEM_Max]: (data: Uint8Array): never => {
+	[EDemoCommands.DEM_Max]: (_data: Uint8Array): never => {
 		throw new Error('Function not implemented.');
 	},
 } as const;
