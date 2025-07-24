@@ -34,7 +34,7 @@
 	},
 	"nodeModulesDir": "auto",
 	"fmt": {
-		"exclude": ["src/gen/*"],
+		"exclude": ["src/gen/*", "proto-definitions/"],
 		"singleQuote": true,
 		"useTabs": true
 	}
