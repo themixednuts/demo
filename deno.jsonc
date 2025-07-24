@@ -30,11 +30,12 @@
 	"lint": {
 		"rules": {
 			"exclude": ["no-misused-new"]
-		}
+		},
+		"exclude": ["src/gen/*", "proto-definitions/*"]
 	},
 	"nodeModulesDir": "auto",
 	"fmt": {
-		"exclude": ["src/gen/*", "proto-definitions/"],
+		"exclude": ["src/gen/*", "proto-definitions/*"],
 		"singleQuote": true,
 		"useTabs": true
 	}
