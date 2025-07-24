@@ -6,6 +6,9 @@
 	"tasks": {
 		"test": "deno test -A"
 	},
+	"publish": {
+		"exclude": ["tests"]
+	},
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM"],
 		"verbatimModuleSyntax": true,
