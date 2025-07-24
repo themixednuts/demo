@@ -7,7 +7,7 @@
 		"test": "deno test -A"
 	},
 	"publish": {
-		"exclude": ["tests"]
+		"include": ["src"]
 	},
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM"],
