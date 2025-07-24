@@ -1,42 +1,42 @@
 {
-	"$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
-	"name": "@mixednuts/demo",
-	"version": "0.1.0",
-	"license": "MIT",
-	"tasks": {
-		"test": "deno test -A"
-	},
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"verbatimModuleSyntax": true,
-		"strict": true,
-		// "noUnusedLocals": true,
-		// "noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true
-	},
-	"imports": {
-		"@/": "./src/",
-		"@bufbuild/buf": "npm:@bufbuild/buf@^1.55.1",
-		"@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.6.1",
-		"@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.6.1",
-		"@std/expect": "jsr:@std/expect@^1.0.16"
-	},
-	"exports": {
-		".": "./src/mod.ts",
-		"./buffers": "./src/buffers/mod.ts",
-		"./gen": "./src/gen/mod.ts"
-	},
-	"lint": {
-		"rules": {
-			"exclude": ["no-misused-new"]
-		},
-		"exclude": ["src/gen/*", "proto-definitions/*"]
-	},
-	"nodeModulesDir": "auto",
-	"fmt": {
-		"exclude": ["src/gen/*", "proto-definitions/*"],
-		"singleQuote": true,
-		"useTabs": true
-	}
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
+  "name": "@mixednuts/demo",
+  "version": "0.1.1",
+  "license": "MIT",
+  "tasks": {
+    "test": "deno test -A",
+  },
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+  },
+  "imports": {
+    "@/": "./src/",
+    "@bufbuild/buf": "npm:@bufbuild/buf@^1.55.1",
+    "@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.6.1",
+    "@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.6.1",
+    "@std/expect": "jsr:@std/expect@^1.0.16",
+  },
+  "exports": {
+    ".": "./src/mod.ts",
+    "./buffers": "./src/buffers/mod.ts",
+    "./gen": "./src/gen/mod.ts",
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-misused-new"],
+    },
+    "exclude": ["src/gen/*", "proto-definitions/*"],
+  },
+  "nodeModulesDir": "auto",
+  "fmt": {
+    "exclude": ["src/gen/*", "proto-definitions/*"],
+    "singleQuote": true,
+    "useTabs": true,
+  },
 }
