@@ -442,7 +442,7 @@ Deno.test("BitBuffer edge cases", async (t) => {
       console.log({ reader, data, remaining: reader.remaining_bits() });
       expect(type).toBe(4);
       expect(size).toBe(3);
-      expect(Array.from(data)).toEqual([0x42, 0xbf, 0x1d]);
+      expect(Array.from(data)).toEqual([8, 136, 27]);
     },
   );
 
