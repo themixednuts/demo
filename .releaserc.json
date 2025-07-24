@@ -1,70 +1,70 @@
 {
-  "branches": ["main"],
-  "plugins": [
-    [
-      "@semantic-release/commit-analyzer",
-      {
-        "preset": "conventionalcommits",
-        "releaseRules": [
-          { "type": "docs", "scope": "README", "release": "patch" },
-          { "type": "refactor", "release": "patch" },
-          { "type": "style", "release": "patch" }
-        ]
-      }
-    ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "preset": "conventionalcommits"
-      }
-    ],
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "CHANGELOG.md"
-      }
-    ],
-    [
-      "semantic-release-replace-plugin",
-      {
-        "replacements": [
-          {
-            "files": ["deno.jsonc"],
-            "from": "\"version\": \".*\"",
-            "to": "\"version\": \"${nextRelease.version}\"",
-            "results": [
-              {
-                "file": "deno.jsonc",
-                "hasChanged": true,
-                "numMatches": 1,
-                "numReplacements": 1
-              }
-            ],
-            "countMatches": true
-          }
-        ]
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["deno.jsonc", "CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
-    [
-      "@semantic-release/github",
-      {
-        "successComment": false,
-        "failComment": false,
-        "releasedLabels": false
-      }
-    ],
-    [
-      "@semantic-release/exec",
-      {
-        "successCmd": "deno publish"
-      }
-    ]
-  ]
+	"branches": ["main"],
+	"plugins": [
+		[
+			"@semantic-release/commit-analyzer",
+			{
+				"preset": "conventionalcommits",
+				"releaseRules": [
+					{ "type": "docs", "scope": "README", "release": "patch" },
+					{ "type": "refactor", "release": "patch" },
+					{ "type": "style", "release": "patch" }
+				]
+			}
+		],
+		[
+			"@semantic-release/release-notes-generator",
+			{
+				"preset": "conventionalcommits"
+			}
+		],
+		[
+			"@semantic-release/changelog",
+			{
+				"changelogFile": "CHANGELOG.md"
+			}
+		],
+		[
+			"semantic-release-replace-plugin",
+			{
+				"replacements": [
+					{
+						"files": ["deno.jsonc"],
+						"from": "\"version\": \".*\"",
+						"to": "\"version\": \"${nextRelease.version}\"",
+						"results": [
+							{
+								"file": "deno.jsonc",
+								"hasChanged": true,
+								"numMatches": 1,
+								"numReplacements": 1
+							}
+						],
+						"countMatches": true
+					}
+				]
+			}
+		],
+		[
+			"@semantic-release/git",
+			{
+				"assets": ["deno.jsonc", "CHANGELOG.md"],
+				"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+			}
+		],
+		[
+			"@semantic-release/github",
+			{
+				"successComment": false,
+				"failComment": false,
+				"releasedLabels": false
+			}
+		],
+		[
+			"@semantic-release/exec",
+			{
+				"successCmd": "deno publish"
+			}
+		]
+	]
 }
