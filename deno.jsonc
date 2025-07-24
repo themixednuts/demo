@@ -4,8 +4,10 @@
   "version": "0.1.0",
   "license": "MIT",
   "publish": {
-    "exclude": ["./tests"],
+    "include": ["./src/*"],
+    "exclude": ["./tests/*"],
   },
+  "tasks": {},
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
     "verbatimModuleSyntax": true,
@@ -17,7 +19,10 @@
   },
   "imports": {
     "@/": "./src/",
-    "./": "./",
+    "@bufbuild/buf": "npm:@bufbuild/buf@^1.55.1",
+    "@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.6.1",
+    "@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.6.1",
+    "@std/expect": "jsr:@std/expect@^1.0.16",
   },
   "exports": {
     ".": "./src/index.ts",
@@ -29,4 +34,5 @@
       "exclude": ["no-misused-new"],
     },
   },
+  "nodeModulesDir": "auto",
 }
