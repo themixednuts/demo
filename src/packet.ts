@@ -40,16 +40,17 @@ export const REGISTRY: [
 	UserMessage.registry,
 ];
 
-const REGISTRY_LOOKUP = REGISTRY.reduce((acc, cur) => {
-	for (const enumObj of cur.enums) {
-		for (const value of Object.values(enumObj)) {
-			if (typeof value === 'number') {
-				acc.set(value, cur.decode);
+export const REGISTRY_LOOKUP: Map<number, typeof REGISTRY[number]['decode']> =
+	REGISTRY.reduce((acc, cur) => {
+		for (const enumObj of cur.enums) {
+			for (const value of Object.values(enumObj)) {
+				if (typeof value === 'number') {
+					acc.set(value, cur.decode);
+				}
 			}
 		}
-	}
-	return acc;
-}, new Map<number, typeof REGISTRY[number]['decode']>());
+		return acc;
+	}, new Map<number, typeof REGISTRY[number]['decode']>());
 
 /**
  * Represents a packet
