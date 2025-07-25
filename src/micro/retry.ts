@@ -41,7 +41,7 @@ export function withRetry<T>(
 	): Micro.Micro<T, unknown> => {
 		return Micro.gen(function* () {
 			try {
-				return yield* Micro.promise(() => new Promise<T>((f) => f(fn())));
+				return yield* Micro.promise(() => Promise.resolve(fn()));
 			} catch (error) {
 				// If no attempts left or error is not retryable, fail
 				if (attemptsLeft <= 0 || !retryConfig.retryableErrors(error)) {
