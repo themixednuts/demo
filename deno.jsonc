@@ -42,6 +42,7 @@
 	"fmt": {
 		"exclude": ["src/gen/*", "proto-definitions/*", "*.md"],
 		"singleQuote": true,
-		"useTabs": true
+		"useTabs": true,
+		"newLineKind": "lf"
 	}
 }
