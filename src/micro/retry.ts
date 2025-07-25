@@ -4,10 +4,11 @@ export interface RetryConfig {
 	maxRetries?: number;
 	baseDelay?: number;
 	maxDelay?: number;
+	signal?: AbortSignal;
 	retryableErrors?: (error: unknown) => boolean;
 }
 
-export const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
+export const DEFAULT_RETRY_CONFIG: Omit<Required<RetryConfig>, 'signal'> = {
 	maxRetries: 3,
 	baseDelay: 1000,
 	maxDelay: 30000,
@@ -27,7 +28,76 @@ export const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
 };
 
 /**
- * Creates a Micro effect with exponential backoff retry logic
+ * Creates a `Micro` effect with exponential backoff retry logic.
+ *
+ * This function wraps a potentially fallible function `fn` in a `Micro` effect
+ * that will automatically retry the operation on failure, using an exponential
+ * backoff strategy (with optional jitter and error classification via `RetryConfig`).
+ *
+ * Retries will stop when either:
+ * - The maximum number of retries is reached
+ * - The `retryableErrors` predicate returns `false` for the thrown error
+ *
+ * @template T The return type of the function `fn`
+ * @param fn A function that returns a value or Promise. Can throw synchronously or asynchronously.
+ * @param config Retry options such as maxRetries, baseDelay, maxDelay, and retryableErrors predicate.
+ * @returns A `Micro` effect that yields the result of `fn`, with retry logic applied.
+ *
+ * @example
+ * ```ts
+ * /// <reference lib="deno.ns" />
+ * import { Micro } from "effect";
+ * import { withRetry, type RetryConfig } from "./retry.ts";
+ * import { assertEquals } from "jsr:@std/assert/equals"
+ *
+ * let attemptCount = 0;
+ * const failingTask = () => {
+ *   attemptCount++;
+ *   if (attemptCount < 3) {
+ *     throw new Error("Fail until attempt 3");
+ *   }
+ *   return "success";
+ * };
+ *
+ * const effect = withRetry(failingTask, {
+ *   maxRetries: 5,
+ *   baseDelay: 10,
+ *   maxDelay: 100,
+ *   retryableErrors: () => true, // Always retry
+ * });
+ *
+ * const result = await Micro.runPromise(effect);
+ * assertEquals(result, "success");
+ * assertEquals(attemptCount, 3);
+ * ```
+ *
+ * @example
+ * ```ts
+ * /// <reference lib="deno.ns" />
+ * // Example of a non-retryable error
+ * import { Micro } from "effect";
+ * import { withRetry, type RetryConfig } from "./retry.ts";
+ * import { assertEquals } from "jsr:@std/assert/equals"
+ *
+ * let called = false;
+ * const nonRetryable = () => {
+ *   called = true;
+ *   throw new Error("fatal");
+ * };
+ *
+ * const effect = Micro.catchAll(
+ *   withRetry(nonRetryable, {
+ *     maxRetries: 3,
+ *     retryableErrors: () => false // Never retry
+ *   }),
+ *    //@ts-ignore
+ *   (err) => Micro.succeed(`caught: ${err?.message}`)
+ * );
+ *
+ * const result = await Micro.runPromise(effect);
+ * assertEquals(result, "caught: fatal");
+ * assertEquals(called, true);
+ * ```
  */
 export function withRetry<T>(
 	fn: () => PromiseLike<T> | T,
@@ -35,32 +105,20 @@ export function withRetry<T>(
 ): Micro.Micro<T, unknown> {
 	const retryConfig = { ...DEFAULT_RETRY_CONFIG, ...config };
 
-	const attempt = (
-		attemptsLeft: number,
-		currentDelay: number,
-	): Micro.Micro<T, unknown> => {
-		return Micro.gen(function* () {
-			try {
-				return yield* Micro.promise(() => Promise.resolve(fn()));
-			} catch (error) {
-				// If no attempts left or error is not retryable, fail
-				if (attemptsLeft <= 0 || !retryConfig.retryableErrors(error)) {
-					return yield* Micro.fail(error);
-				}
+	const max = Micro.scheduleWithMaxDelay(retryConfig.maxDelay);
+	const expo = Micro.scheduleExponential(retryConfig.baseDelay);
+	const policy = max(expo);
 
-				// Calculate next delay with exponential backoff
-				const nextDelay = Math.min(currentDelay * 2, retryConfig.maxDelay);
-
-				// Wait before retrying
-				yield* Micro.sleep(currentDelay);
-
-				// Retry with one less attempt
-				return yield* attempt(attemptsLeft - 1, nextDelay);
-			}
-		});
-	};
-
-	return attempt(retryConfig.maxRetries, retryConfig.baseDelay);
+	return Micro.retry(
+		Micro.tryPromise({
+			try: async () => await fn(),
+			catch: (err) => err,
+		}),
+		{
+			schedule: policy,
+			times: retryConfig.maxRetries,
+		},
+	);
 }
 
 /**
@@ -92,152 +150,11 @@ export function retryable<TArgs extends unknown[], TReturn>(
  */
 export async function conditionalRetry<T>(
 	fn: () => Promise<T>,
-	shouldRetry: boolean,
 	config: RetryConfig = {},
+	shouldRetry: boolean,
 ): Promise<T> {
 	if (!shouldRetry) {
 		return await fn();
 	}
 	return executeWithRetry(fn, config);
 }
-
-/**
- * Simple exponential backoff with jitter to avoid thundering herd
- */
-export function calculateDelay(
-	attempt: number,
-	baseDelay: number,
-	maxDelay: number,
-	jitter: boolean = true,
-): number {
-	const exponentialDelay = baseDelay * Math.pow(2, attempt);
-	const cappedDelay = Math.min(exponentialDelay, maxDelay);
-
-	if (jitter) {
-		// Add ±25% jitter to prevent thundering herd
-		const jitterRange = cappedDelay * 0.25;
-		const jitterOffset = (Math.random() - 0.5) * 2 * jitterRange;
-		return Math.max(0, cappedDelay + jitterOffset);
-	}
-
-	return cappedDelay;
-}
-
-/**
- * Common retry configs for different scenarios
- */
-export const RETRY_PRESETS = {
-	network: {
-		maxRetries: 3,
-		baseDelay: 1000,
-		maxDelay: 10000,
-		retryableErrors: (error: unknown) => {
-			if (error instanceof Error) {
-				const message = error.message.toLowerCase();
-				return (
-					message.includes('network') ||
-					message.includes('timeout') ||
-					message.includes('fetch')
-				);
-			}
-			return false;
-		},
-	} as RetryConfig,
-
-	aggressive: {
-		maxRetries: 5,
-		baseDelay: 500,
-		maxDelay: 30000,
-	} as RetryConfig,
-
-	conservative: {
-		maxRetries: 2,
-		baseDelay: 2000,
-		maxDelay: 10000,
-	} as RetryConfig,
-
-	streaming: {
-		maxRetries: 3,
-		baseDelay: 1000,
-		maxDelay: 5000,
-		retryableErrors: (error: unknown) => {
-			// More permissive for streaming scenarios
-			if (error instanceof Error) {
-				const message = error.message.toLowerCase();
-				return (
-					(!message.includes('abort') && // Don't retry aborted requests
-						!message.includes('4')) || // Don't retry 4xx errors
-					message.includes('timeout')
-				);
-			}
-			return true;
-		},
-	} as RetryConfig,
-
-	/**
-	 * For cases where you want micro-level control
-	 */
-	realtime: {
-		maxRetries: 2,
-		baseDelay: 250,
-		maxDelay: 2000,
-		retryableErrors: (error: unknown) => {
-			if (error instanceof Error) {
-				const message = error.message.toLowerCase();
-				// Very selective retries for real-time scenarios
-				return message.includes('timeout') || message.includes('network');
-			}
-			return false;
-		},
-	} as RetryConfig,
-} as const;
-
-/**
- * Micro-specific utilities
- */
-export const MicroRetry = {
-	/**
-	 * Creates a Micro effect that retries with custom logic
-	 */
-	withCustomPolicy<T>(
-		fn: () => Promise<T>,
-		policy: (
-			attempt: number,
-			error: unknown,
-		) => Micro.Micro<number | null, never>,
-	): Micro.Micro<T, unknown> {
-		const attempt = (attemptNumber: number): Micro.Micro<T, unknown> => {
-			return Micro.gen(function* () {
-				try {
-					return yield* Micro.promise(() => fn());
-				} catch (error) {
-					const delayOrStop = yield* policy(attemptNumber, error);
-
-					if (delayOrStop === null) {
-						return yield* Micro.fail(error);
-					}
-
-					yield* Micro.sleep(delayOrStop);
-					return yield* attempt(attemptNumber + 1);
-				}
-			});
-		};
-
-		return attempt(0);
-	},
-
-	/**
-	 * Circuit breaker pattern using Micro
-	 */
-	withCircuitBreaker<T>(
-		fn: () => Promise<T>,
-		_config: {
-			failureThreshold: number;
-			resetTimeout: number;
-		},
-	): Micro.Micro<T, unknown> {
-		// This would require state management, which is simplified here
-		// In practice, you'd want to use a more sophisticated circuit breaker
-		return Micro.promise(() => fn());
-	},
-} as const;
