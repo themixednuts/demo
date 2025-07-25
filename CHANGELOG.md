@@ -1,3 +1,10 @@
+## [0.1.6](https://github.com/themixednuts/demo/compare/v0.1.5...v0.1.6) (2025-07-25)
+
+### Bug Fixes
+
+* retry ([703fe7a](https://github.com/themixednuts/demo/commit/703fe7ab53f95c00d8bfb9625b3d83757fb933fd))
+* retry ([ef5b677](https://github.com/themixednuts/demo/commit/ef5b677aecdae4baed7b9f85b2fbfdd18d9897b5))
+
 ## [0.1.5](https://github.com/themixednuts/demo/compare/v0.1.4...v0.1.5) (2025-07-25)
 
 ### Bug Fixes
