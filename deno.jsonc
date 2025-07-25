@@ -23,7 +23,8 @@
 		"@bufbuild/buf": "npm:@bufbuild/buf@^1.55.1",
 		"@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.6.1",
 		"@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.6.1",
-		"@std/expect": "jsr:@std/expect@^1.0.16"
+		"@std/expect": "jsr:@std/expect@^1.0.16",
+		"effect": "npm:effect@^3.17.1"
 	},
 	"exports": {
 		".": "./src/mod.ts",
